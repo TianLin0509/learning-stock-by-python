@@ -12,3 +12,4 @@
 
 # 已经完成的一些代码：
 * [统计中小板股票涨停后次日上涨的概率](https://github.com/TianLin0509/learning-stock-by-python/blob/master/May28.py)
+* [利用多进程统计所有股票涨停后第三日开盘价高于第二日概率](https://github.com/TianLin0509/learning-stock-by-python/blob/master/May29_1.py)
