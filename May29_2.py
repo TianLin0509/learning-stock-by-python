@@ -1,10 +1,11 @@
 # ====================================================
-#  统计所有A股三年内涨停后第第三天开盘价高于第二天概率
+#  统计所有A股三年内连板后第第三天开盘价高于第二天概率
 # ====================================================
 import multiprocessing
 import time
 import tushare as ts
 import pandas as pd
+import numpy as np
 
 # 获得所有股票代码
 all_stocks = ts.get_stock_basics().index
@@ -22,32 +23,21 @@ def t(start, ed, queue):
         # print(50 * '=')
         try:
             a = ts.get_hist_data(gupiao_code, end='2019-05-28').reset_index()
-            # print(a)
-            b = a[a.p_change > 9.8]
-            if len(b) == 0:
-                continue
-            # 涨停的日子
-            c = b.index
-            if c[-1] == (a.shape[0] - 1):
-                c = c[:-1]
-            # 涨停第二天和第三天
-            d = a.iloc[c + 1]
-            e = d[d.p_change > 9.8]
-            f = e.index - 1
-            g = a.iloc[pd.Series(list(set(c).difference(set(f))))]
-            h = a.iloc[g.index - 1]
-            s = h[h.p_change > 9.8].index
-            print(s)
-            j = a.iloc[s - 1].reset_index()
-            k = a.iloc[s - 2].reset_index()
-            l = k.open - j.open
-            m = l[l > 0]
-            gt += m.shape[0]
-            ft += l.shape[0]
-            # print(g.shape[0], f.shape[0])
+            b = a[a.p_change > 9.9].index
+            c = []
+            # -1后一天， +1前一天
+            for i in b:
+                if (i - 1) in b and (i + 1) not in b:
+                    c.append(i)
+            c = pd.Series(c)
+            diff = a.iloc[c - 3].open.values - a.iloc[c - 2].open.values
+            f = diff.shape[0]
+            g = np.where(diff > 0)[0].shape[0]
+            gt += g
+            ft += f
         except AttributeError:
             print('该股票近三年没有记录！')
-        print(gt, ft)
+        # print(gt, ft)
     queue.put((gt, ft))
 
 
@@ -55,7 +45,7 @@ def t(start, ed, queue):
 if __name__ == '__main__':
     queue = multiprocessing.Queue()
     p_pool = []
-    multi_process = 1
+    multi_process = 4
     step = all_stocks.shape[0] // multi_process
     time_start = time.time()
     for i in range(multi_process):
