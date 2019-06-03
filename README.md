@@ -17,3 +17,5 @@
   - [收集所有五连板股票并写入txt文件](https://github.com/TianLin0509/learning-stock-by-python/blob/master/June1_fyy_model/June1.py)
   - [结合matplotlib,画出五连板股票的后续走势，寻找抄底契机](https://github.com/TianLin0509/learning-stock-by-python/blob/master/June1_fyy_model/June2.py)
   - <img src="https://github.com/TianLin0509/learning-stock-by-python/blob/master/June1_fyy_model/example.png" width = "350" height = "300" alt="五连板后走势图" align=center />
+  - [使用fyy回测模型，找到上车点（分为June3和June3_2, 前者负责找出合适股票，后者负责画图）](https://github.com/TianLin0509/learning-stock-by-python/tree/master/June1_fyy_model)
+  - <img src="https://github.com/TianLin0509/learning-stock-by-python/blob/master/June1_fyy_model/002288.png" width = "350" height = "300" alt="fyy回测模型图" align=center /> 
