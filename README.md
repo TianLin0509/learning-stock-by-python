@@ -19,5 +19,5 @@
   - <img src="https://github.com/TianLin0509/learning-stock-by-python/blob/master/June1_fyy_model/example.png" width = "350" height = "300" alt="五连板后走势图" align=center />
   - [使用fyy回测模型，找到上车点（分为June3和June3_2, 前者负责找出合适股票，后者负责画图）](https://github.com/TianLin0509/learning-stock-by-python/tree/master/June1_fyy_model)
   - <img src="https://github.com/TianLin0509/learning-stock-by-python/blob/master/June1_fyy_model/002288.png" width = "350" height = "300" alt="fyy回测模型图" align=center /> 
-  - [收集上证股票2018年周线图及成交量，并以numpy矩阵形式保存以供神经网络训练](
+* [收集上证股票2018年周线图及成交量，并以numpy矩阵形式保存以供神经网络训练](
 https://github.com/TianLin0509/learning-stock-by-python/blob/master/June5_DNNmodel/June4.py)
