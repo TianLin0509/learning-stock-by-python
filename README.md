@@ -21,3 +21,5 @@
   - <img src="https://github.com/TianLin0509/learning-stock-by-python/blob/master/June1_fyy_model/002288.png" width = "350" height = "300" alt="fyy回测模型图" align=center /> 
 * [收集上证股票2018年周线图及成交量，并以numpy矩阵形式保存以供神经网络训练](
 https://github.com/TianLin0509/learning-stock-by-python/blob/master/June5_DNNmodel/June4.py)
+* [通过神经网络预测周线图](https://github.com/TianLin0509/learning-stock-by-python/blob/master/June5_DNNmodel/June4.py).具体的思路见文件夹下readme..可以视作反面教材，不过吹响了DNN的号角.
+  - <img src="https://github.com/TianLin0509/learning-stock-by-python/blob/master/June5_DNNmodel/example.png" width = "350" height = "300" alt="神经网络预测周线" align=center /> 
