@@ -3,91 +3,47 @@ import time
 import tushare as ts
 import pandas as pd
 import numpy as np
-from functools import wraps
-from tqdm import tqdm
-import os
+from tqdm import *
 
 all_stocks = ts.get_stock_basics().index
-
-
-# ------------------------------------------
-#  将函数包装为多进程
-# ------------------------------------------
-def multi_proc_deco(func):
-    @wraps(func)
-    def multiprocess_func(queue, *args, **kwargs):
-        results = func(*args)
-        # print(zhangting_days)
-        queue.put(results)
-
-    return multiprocess_func
-
-
-# ------------------------------------------
-#  查找所有涨停股
-# ------------------------------------------
-@multi_proc_deco
-def zhangting_chazhao(codes, start='2019-04-01'):
-    zhangting_days = []
-    for code in codes:
-        result = ts.get_hist_data(code, start=start, end='2019-05-28')
-        zhangting_days.append(result[result.p_change > 9.9])
-    return zhangting_days
-    # print(zhangting_days)
-
 
 # ------------------------------------------
 #  查找近期强势涨停股（大盘大跌）
 # ------------------------------------------
-today_time = time.strftime('%Y-%m-%d', time.localtime())
-start_time = time.strftime('%Y-%m-%d', time.localtime(time.time() - 30 * 24 * 60 * 60))
+today_day = time.strftime('%Y-%m-%d', time.localtime())
+start_day = time.strftime('%Y-%m-%d', time.localtime(time.time() - 30 * 24 * 60 * 60))
 
 
-@multi_proc_deco
-def June16(codes):
-    #print(multiprocessing.current_process().name)
-    results = []
-    if multiprocessing.current_process().name == 'Process-1':
-        codes = tqdm(codes)
-    for code in codes:
-        # print(code)
-        try:
-            temp_result = ts.get_hist_data(code, start=start_time, end=today_time)
-            results.append(temp_result[temp_result.p_change > 9.9])
-        except Exception:
-            pass
-    return results
+def June16(code):
+    try:
+        temp_result = ts.get_hist_data(code, start=start_day, end=today_day)
+        # 筛选近期涨停个股
+        temp = temp_result[(temp_result.p_change > 9.9) & (temp_result.p_change < 11)]
+        # 只留下当天大盘不好的
+        dapan = [ts.get_hist_data('sh', start=x, end=x).p_change.values[0] for x in temp.index]
+        selected = temp.iloc[np.where(np.array(dapan) < -0.6)].copy()
+        if len(selected) > 0:
+            return code, selected
+    except Exception:
+        return
 
 
 if __name__ == '__main__':
     # ------------------------------------------
     #  使用多进程运行target函数
     # ------------------------------------------
-    queue = multiprocessing.Queue()
-    p_pool = []
-    multi_process = 8
-    step = all_stocks.shape[0] // multi_process
-    time_start = time.time()
-    for i in range(multi_process):
-        st = step * i
-        if i == multi_process - 1:
-            ed = all_stocks.shape[0]
-        else:
-            ed = st + step
-        codes = all_stocks[st: ed]
-        p = multiprocessing.Process(target=June16, args=(queue, codes))
-        p.start()
-        p_pool.append(p)
-    for p in p_pool:
-        p.join()
-
-    temp = []
-
-    # ------------------------------------------
-    #   提取多进程输出
-    # ------------------------------------------
-
-    for i in range(multi_process):
-        temp += queue.get()
-
-    print(len(temp))
+    start_time = time.time()
+    num = all_stocks.shape[0]
+    with multiprocessing.Pool(6) as p:
+        res = list(tqdm(p.imap(June16, all_stocks[:num]), total=num))
+    print("Sub-process(es) done.")
+    print(time.time() - start_time)
+    res = list(filter(None, res))
+    csv_res = []
+    for i in res:
+        i[1].insert(0, 'code', i[0])
+        csv_res.append(i[1][['code', 'p_change','volume', 'v_ma10', 'v_ma20']])
+    csv_res = pd.concat(csv_res)
+    csv_res.columns = ['代码', '涨幅', '成交量', '10日均成交量', '20日均成交量']
+    csv_res.to_csv('June17.csv', encoding='gbk')
+    print(csv_res)
