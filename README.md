@@ -23,3 +23,4 @@
 https://github.com/TianLin0509/learning-stock-by-python/blob/master/June5_DNNmodel/June4.py)
 * [通过神经网络预测周线图](https://github.com/TianLin0509/learning-stock-by-python/blob/master/June5_DNNmodel/June4.py).具体的思路见文件夹下readme..可以视作反面教材，不过吹响了DNN的号角.
   - <img src="https://github.com/TianLin0509/learning-stock-by-python/blob/master/June5_DNNmodel/example.png" width = "350" height = "300" alt="神经网络预测周线" align=center /> 
+* [使用多进程与tqdm，简洁地提取出近一个月内在大盘弱势时涨停板，并输出为csv](https://github.com/TianLin0509/learning-stock-by-python/blob/master/June15/June16.py)
