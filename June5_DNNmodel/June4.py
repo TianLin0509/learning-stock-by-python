@@ -39,7 +39,7 @@ checkpoint = callbacks.ModelCheckpoint('model.h5', monitor='val_loss',
                                        verbose=1, save_best_only=True, mode='min', save_weights_only=False)
 Ts = callbacks.TensorBoard(log_dir='./logs')
 # netron.start('model.h5')
-model.fit(x=inputs, y=labels, batch_size=128, epochs=2000, verbose=2, validation_split=0.2, callbacks=[checkpoint, Ts])
+#model.fit(x=inputs, y=labels, batch_size=128, epochs=2000, verbose=2, validation_split=0.2, callbacks=[checkpoint, Ts])
 
 model.load_weights('./model.h5')
 pred = model.predict(test_inputs)

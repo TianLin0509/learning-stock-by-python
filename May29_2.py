@@ -46,8 +46,9 @@ if __name__ == '__main__':
     queue = multiprocessing.Queue()
     p_pool = []
     multi_process = 4
-    step = all_stocks.shape[0] // multi_process
+    # step = all_stocks.shape[0] // multi_process
     time_start = time.time()
+    step = 20
     for i in range(multi_process):
         st = step * i
         if i == multi_process - 1:
