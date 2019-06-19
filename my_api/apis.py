@@ -39,3 +39,11 @@ def period_days(start_day, deltaday):
 
 # print(get_data_day('600137', period_days('2019-05-10', 20)))
 print(get_data_day('600137', '2019-05-10'))
+
+
+
+# ------------------------------------------
+#  更新新日期的K线数据
+# ------------------------------------------
+def update_days():
+    
